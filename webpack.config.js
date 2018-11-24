@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.ts',
@@ -24,5 +25,9 @@ module.exports = {
         new webpack.LoaderOptionsPlugin({
             debug: true
         })
-    ]
+    ],
+    optimization: {
+        // We no not want to minimize our code.
+        minimize: false
+    },
 };

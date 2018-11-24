@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[1],[,function(n,o,e){"use strict";function r(){return"Hello from lazy loaded TypeScript!"}e.r(o),e.d(o,"helloDynamicImport",function(){return r})}]]);
-//# sourceMappingURL=1.bundle.js.map

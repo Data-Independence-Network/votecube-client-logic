@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack:///./src/test/testDynamic.ts"],"names":["helloDynamicImport","__webpack_require__","r","__webpack_exports__","d"],"mappings":"uFAAO,SAASA,IACZ,MAAO,qCADXC,EAAAC,EAAAC,GAAAF,EAAAG,EAAAD,EAAA,uCAAAH","file":"1.bundle.js","sourcesContent":["export function helloDynamicImport() {\n    return 'Hello from lazy loaded TypeScript!'\n}"],"sourceRoot":""}

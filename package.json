@@ -1,0 +1,17 @@
+{
+  "name": "votecube-client-logic",
+  "version": "0.0.2",
+  "description": "A brand new Glimmer app.",
+  "engines": {
+    "node": ">= 10.0"
+  },
+  "main": "dist/bundle.js",
+  "scripts": {},
+  "devDependencies": {
+    "ts-loader": "^5.3.0",
+    "typescript": "3.1.6",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}

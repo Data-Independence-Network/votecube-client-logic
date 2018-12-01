@@ -1,3 +1,6 @@
+// export const D = document; // new NodePtr('')
+
+/*
 export class NodePtr {
 	el: Node
 
@@ -14,14 +17,13 @@ export class NodePtr {
 		return this.el = gQ(this.id)
 	}
 }
-
-export const D = new NodePtr('')
 D.el           = document
+*/
 
 
 export interface GlobalEventListenerMap {
 	ad(
-		target: NodePtr
+		target: Node // NodePtr
 	): PerElementEventListenerMap
 
 	tM: Map<Node, PerElementEventListenerMap>
@@ -56,7 +58,7 @@ export const LM: GlobalEventListenerMap = {
 	tM: new Map(), // Target element Map
 	// Add add event handler to element
 	ad(
-		tg: Node | NodePtr, // element
+		tg: Node // | NodePtr, // element
 	) {
 		return eCO(this.tM, tg,
 			// Per element Event listener map
@@ -69,11 +71,12 @@ export const LM: GlobalEventListenerMap = {
 				) {
 					// add to array
 					eCA(this.lM, eN).push(ln)
-					let node: Node = <Node>tg
-					if (tg instanceof NodePtr) {
-						node = tg.val
-					}
-					node.addEventListener(eN, ln)
+					// let node: Node = <Node>tg
+					// if (tg instanceof  NodePtr) {
+					// 	node = tg.val
+					// }
+					// node.addEventListener(eN, ln)
+					tg.addEventListener(eN, ln)
 
 					return (
 						eN2: string,
@@ -87,11 +90,12 @@ export const LM: GlobalEventListenerMap = {
 				) {
 					if (this.lM.has(eN)) {
 						for (let ln of this.lM.get(eN)) {
-							let node: Node = <Node>tg
-							if (tg instanceof NodePtr) {
-								node = tg.val
-							}
-							node.removeEventListener(eN, ln)
+							// let node: Node = <Node>tg
+							// if (tg instanceof NodePtr) {
+							// 	node = tg.val
+							// }
+							// node.removeEventListener(eN, ln)
+							tg.removeEventListener(eN, ln)
 						}
 						this.lM.delete(eN)
 					}
@@ -149,11 +153,12 @@ export interface DispatchEventOnKnownObject<E> {
 
 // dispatch event
 export function dE<E>(
-	tg: NodePtr, // target
+	tg: Node,  // NodePtr, // target
 	eN: string, // Event Name,
 	eO: E // Event Object
 ): DispatchEventOnKnownObject<E> {
-	tg.val.dispatchEvent(new CustomEvent(eN, {detail: eO}))
+	// tg.val.dispatchEvent(new CustomEvent(eN, {detail: eO}))
+	tg.dispatchEvent(new CustomEvent(eN, {detail: eO}))
 	return (
 		eO2 // event object
 	) => {

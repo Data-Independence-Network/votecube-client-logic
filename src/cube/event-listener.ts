@@ -1,11 +1,9 @@
 import {
-	D,
 	dE,
 	gQ,
 	IsKnownElementOfTag,
 	iT,
 	LM,
-	NodePtr,
 	pD
 } from '../utils/utils'
 import {
@@ -13,19 +11,24 @@ import {
 	viewport
 } from './cube-movement'
 
+export interface MoveViewportEvent {
+	x: number;
+	y: number;
+}
 
 // View Port
-const VP = new NodePtr('#viewport')
+// const VP = new NodePtr('#viewport')
 
 // document listener map
-export const dLM = LM.ad(D)
+// export const dLM = LM.ad(D)
+export const dLM = LM.ad(document)
 
 
 export function setViewPort(
 	el = gQ('#cube')
 ): void {
 	viewport.el = el
-	VP.el       = null
+	// VP.el       = null
 }
 
 dLM.ad('keydown', function (ev) {
@@ -129,7 +132,7 @@ function oMmTm(
 		// Get touch co-ords
 		// ev.originalEvent.touches ? ev = ev.originalEvent.touches[0] : null
 		// dispatch 'move-viewport' event
-		dE(VP, 'move-viewport', {x: p.screenX, y: p.screenY})
+		moveViewport({x: p.screenX, y: p.screenY})
 	}
 }
 
@@ -145,11 +148,9 @@ function rmMmTm() {
 
 var lastMove = 0
 
-LM.ad(VP).ad('move-viewport', function (
-	ev // event
+function moveViewport(
+	event: MoveViewportEvent // event
 ) {
-	let newMouseLocation = ev.detail
-
 	let mouseObject = mouse
 	let startCoords = mouseObject.start
 	let lastCoords  = mouseObject.last
@@ -208,8 +209,8 @@ LM.ad(VP).ad('move-viewport', function (
 	// dy = movementInPixels(startCoords.y, newMouseLocation.y)
 
 	// if (!directionChanged) {
-	vx = directionVector(startCoords.x, newMouseLocation.x)
-	vy = directionVector(startCoords.y, newMouseLocation.y)
+	vx = directionVector(startCoords.x, event.x)
+	vy = directionVector(startCoords.y, event.y)
 	// }
 	// console.log('x: ' + vx)
 	// console.log('y: ' + vy)
@@ -258,9 +259,9 @@ LM.ad(VP).ad('move-viewport', function (
 	//     console.log('staying, dir changed:  ' + directionChanged)
 	// }
 
-	lastCoords.x = newMouseLocation.x
-	lastCoords.y = newMouseLocation.y
-})
+	lastCoords.x = event.x
+	lastCoords.y = event.y
+}
 
 // setTimeout(function () {
 //     console.log('---===<<<((( TICK )))>>>===---');

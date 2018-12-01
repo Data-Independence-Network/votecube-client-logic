@@ -1,7 +1,4 @@
-import {
-	D,
-	gQ
-} from '../utils/utils'
+import {populateValueMatrix} from './cube-move-matrix'
 
 let Px        = []
 let Py        = []
@@ -24,7 +21,7 @@ export interface MousePosition {
 }
 
 export interface ViewPort {
-	el: Element
+	el: Element | null
 	x: number
 	xi: number
 	y: number
@@ -44,9 +41,8 @@ export interface ViewPort {
 export const mouse: MousePosition = {
 	       start: {x: undefined, y: undefined}
        },
-             touch                = D.ontouchmove !== undefined,
              viewport: ViewPort   = {
-	             el: gQ('#cube'),
+	             el: null,
 	             x: 0,
 	             xi: 0,
 	             y: 0,
@@ -57,22 +53,27 @@ export const mouse: MousePosition = {
 		             moveY,
 		             yBy
 	             ) {
-		             if (!moveX && !moveY)
+		             if (!this.el) {
 			             return
-		             if (moveX)
+		             }
+		             if (!moveX && !moveY) {
+			             return
+		             }
+		             if (moveX) {
 			             this.x = moveCoordinates(Px, this.xi += xBy)[0]
-		             if (moveY)
+		             }
+		             if (moveY) {
 			             this.y = moveCoordinates(Py, this.yi += yBy)[0]
+		             }
 		             // console.log('x: ' + this.x + '\t\ty: ' + this.y);
 		             // console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
 		             let xiRemainder = getMod24AbsRemainder(this.xi)
 		             let yiRemainder = getMod24AbsRemainder(this.yi)
 
-		             // Hav a position, now need to map it to the right frame of matrix
+		             // Have a position, now need to map it to the right frame of matrix
 
-		             let boundaryX = xiRemainder % 6 == 0
-		             let boundaryY = yiRemainder % 6 == 0
-
+		             // let boundaryX = xiRemainder % 6 == 0
+		             // let boundaryY = yiRemainder % 6 == 0
 		             // if (boundaryX && boundaryY) {
 		             //     console.log('axis-aligned full square');
 		             // }
@@ -83,6 +84,9 @@ export const mouse: MousePosition = {
 		             this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
 	             },
 	             reset() {
+		             if (!this.el) {
+			             return
+		             }
 		             this.xi = 0
 		             this.yi = 0
 		             this.move(0, 0, 0, 0)

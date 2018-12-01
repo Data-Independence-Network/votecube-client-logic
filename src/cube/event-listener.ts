@@ -5,6 +5,7 @@ import {
 	IsKnownElementOfTag,
 	iT,
 	LM,
+	NodePtr,
 	pD
 } from '../utils/utils'
 import {
@@ -12,12 +13,20 @@ import {
 	viewport
 } from './cube-movement'
 
+
 // View Port
-var VP = gQ('#viewport')
+const VP = new NodePtr('#viewport')
 
 // document listener map
-var dLM = LM.ad(D)
+export const dLM = LM.ad(D)
 
+
+export function setViewPort(
+	el = gQ('#cube')
+): void {
+	viewport.el = el
+	VP.el       = null
+}
 
 dLM.ad('keydown', function (ev) {
 	rmMmTm()
@@ -46,10 +55,16 @@ dLM.ad('keydown', function (ev) {
 			viewport.reset()
 			break
 		case 109:
+			if (!viewport.el) {
+				return
+			}
 			if (moveSpeed > 128)
 				moveSpeed /= 2
 			break
 		case 107:
+			if (!viewport.el) {
+				return
+			}
 			if (moveSpeed < 4096)
 				moveSpeed *= 2
 			break
@@ -64,7 +79,7 @@ dLM.ad('keydown', function (ev) {
 ('mouseup', rmMmTm)
 ('touchend', rmMmTm)
 
-var moveSpeed = 256
+let moveSpeed = 256
 
 /**
  * On mousedown or touchstart
@@ -72,6 +87,9 @@ var moveSpeed = 256
 function oMdTs(
 	ev: MouseEvent | TouchEvent // Event
 ) {
+	if (!viewport.el) {
+		return
+	}
 	rmMmTm()
 
 	delete mouse.last
@@ -91,6 +109,7 @@ function oMdTs(
 	dLM.ad('mousemove', oMmTm)('touchmove', oMmTm)
 }
 
+const TOUCH = document.ontouchmove !== undefined
 
 /**
  * On mousemove or touchmove
@@ -98,10 +117,13 @@ function oMdTs(
 function oMmTm(
 	ev // event
 ) {
+	if (!viewport.el) {
+		return
+	}
 	let t = ev.touches
 
 	// Only perform rotation if one touch or mouse (e.g. still scale with pinch and zoom)
-	if (!touch || !(t && t.length > 1)) {
+	if (!TOUCH || !(t && t.length > 1)) {
 		ev.preventDefault()
 		let p = t ? t[0] : ev
 		// Get touch co-ords
@@ -115,6 +137,9 @@ function oMmTm(
  * Remove mousemove or touchmove
  */
 function rmMmTm() {
+	if (!viewport.el) {
+		return
+	}
 	dLM.rm('mousemove')('touchmove')
 }
 
@@ -130,12 +155,12 @@ LM.ad(VP).ad('move-viewport', function (
 	let lastCoords  = mouseObject.last
 
 	let dx, dy,
-	    vx,
-	    vy,
-	    moveX: 0 | 1    = 0,
-	    xBy: -1 | 0 | 1 = 0,
-	    moveY: 0 | 1    = 0,
-	    yBy: -1 | 0 | 1 = 0
+	    vx: DirectionVector,
+	    vy: DirectionVector,
+	    moveX: 0 | 1           = 0,
+	    xBy: MovementDirection = 0,
+	    moveY: 0 | 1           = 0,
+	    yBy: MovementDirection = 0
 	// directionChanged = 0
 
 	let now: number = new Date().getTime()
@@ -200,13 +225,13 @@ LM.ad(VP).ad('move-viewport', function (
 	// If general directionVector is in Y
 	else if (dy >= 4 && dy / 4 > dx) {
 		// console.log('dy >= 4 && dy / 4 > dx')
-		xBy   = -vy[0]
+		xBy   = <MovementDirection>-vy[0]
 		moveX = 1
 	}
 	// Otherwise its in both x and y
 	else if (dx >= 4 && dy >= 4) {
 		// console.log('dx >= 4 && dy >= 4')
-		xBy   = -vy[0]
+		xBy   = <MovementDirection>-vy[0]
 		yBy   = vx[0]
 		moveX = 1
 		moveY = 1
@@ -241,10 +266,15 @@ LM.ad(VP).ad('move-viewport', function (
 //     console.log('---===<<<((( TICK )))>>>===---');
 // }, 4000)
 
+export type MovementDirection = -1 | 0 | 1;
+export type ChangeInPixels = number;
+export type Range = -1 | 1;
+export type DirectionVector = [MovementDirection, ChangeInPixels, Range];
+
 function directionVector(
 	fromPosition,
 	toPosition
-) {
+): DirectionVector {
 	let movementDirection, changeInPixels, range
 	if (toPosition >= 0 && fromPosition >= 0) {
 		range = 1

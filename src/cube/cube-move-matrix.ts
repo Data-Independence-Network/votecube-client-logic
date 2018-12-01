@@ -1,8 +1,8 @@
-var VALUE_MATRIX = []
+export const VALUE_MATRIX = []
 
-function populateValueMatrix() {
+export function populateValueMatrix() {
     // 5   1   2        5   1   2        5   1   2       5   1   2
-    var matrixValueTemplate =
+    const matrixValueTemplate =
         [[[0, 0, 100], [20, 0, 80], [40, 0, 60], [50, 0, 50]],
             [[0, 20, 80], [10, 10, 80], [30, 10, 60], [45, 45, 10]],
             [[0, 40, 60], [5, 35, 60], [15, 35, 50], [33, 33, 33]],
@@ -24,7 +24,7 @@ function populateValueMatrix() {
 // always starting at perpendicular x (due to 7 positions defined)
 // starting from full square and going towards 45/45 (in y)
 // (in x & y directions specified by the move matrix)
-    let matrixTempateDirectedPositions = [
+    let matrixTemplateDirectedPositions = [
         // right side up
         // left top right, x-index start, y-index start
         [4, 0, 1, 24, 24],
@@ -62,16 +62,16 @@ function populateValueMatrix() {
 
 // next 8 - top and bottom are flipped (5 instead of 0)
     for (let i = 0; i < 8; i++) {
-        let template = matrixTempateDirectedPositions[i]
-        matrixTempateDirectedPositions.push([template[0], 5, template[2], template[3], template[4]])
+        let template = matrixTemplateDirectedPositions[i]
+        matrixTemplateDirectedPositions.push([template[0], 5, template[2], template[3], template[4]])
     }
 
 // next 16 - upside down, second is flipped (5 to 0 and back),
 // initial offset -180 abs(-12), 180 (12)
     for (let i = 0; i < 16; i++) {
-        let template = matrixTempateDirectedPositions[i]
+        let template = matrixTemplateDirectedPositions[i]
         let upDown = template[1] == 0 ? 5 : 0
-        matrixTempateDirectedPositions.push([template[0], upDown, template[2], Math.abs(template[3] - 12), template[4] + 12])
+        matrixTemplateDirectedPositions.push([template[0], upDown, template[2], Math.abs(template[3] - 12), template[4] + 12])
     }
 
     for (let i = 0; i < 24; i++) {
@@ -83,7 +83,7 @@ function populateValueMatrix() {
     }
 
     for (let i = 0; i < 32; i++) {
-        let subMatrixPositions = matrixTempateDirectedPositions[i]
+        let subMatrixPositions = matrixTemplateDirectedPositions[i]
         let moveSubMatrix = matrixMoveXY[i]
 
         let positionStartX = subMatrixPositions[3]

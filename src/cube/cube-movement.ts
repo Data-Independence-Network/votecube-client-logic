@@ -13,13 +13,13 @@ for (let i = 0; i < DIVISIONS; i++) {
 
 export enum Bool {
 	False = 0,
-	True = 1
+	True  = 1
 }
 
 export enum Move {
 	Down = -1,
 	None = 0,
-	Up = 1
+	Up   = 1
 }
 
 populateValueMatrices()
@@ -53,8 +53,8 @@ export interface ViewPort {
 		yBy?: Move
 	)
 
-	moveZoom(
-		zoomIn: Boolean
+	changeZoom(
+		zoomIn: Bool
 	)
 
 	reset(): void
@@ -62,61 +62,66 @@ export interface ViewPort {
 }
 
 export const mouse: MousePosition = {
-				 start: {x: undefined, y: undefined}
-			 },
-						 viewport: ViewPort   = {
-							 cb: null,
-							 el: null,
-							 x: 0,
-							 xi: 0,
-							 y: 0,
-							 yi: 0,
-							 move(
-								 moveX: Bool,
-								 xBy: Move,
-								 moveY: Bool,
-								 yBy: Move
-							 ) {
-								 if (!this.el) {
-									 return
-								 }
-								 if (!moveX && !moveY) {
-									 return
-								 }
-								 if (moveX) {
-									 this.x = moveCoordinates(Px, this.xi += xBy)[0]
-								 }
-								 if (moveY) {
-									 this.y = moveCoordinates(Py, this.yi += yBy)[0]
-								 }
-								 // console.log('x: ' + this.x + '\t\ty: ' + this.y);
-								 // console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
-								 let xiRemainder = getMod24AbsRemainder(this.xi)
-								 let yiRemainder = getMod24AbsRemainder(this.yi)
+	       start: {x: undefined, y: undefined}
+       },
+             viewport: ViewPort   = {
+	             cb: null,
+	             el: null,
+	             x: 0,
+	             xi: 0,
+	             y: 0,
+	             yi: 0,
+	             changeZoom(
+		             zoomIn: Bool
+	             ) {
+		             console.log('TODO: implement')
+	             },
+	             move(
+		             moveX: Bool,
+		             xBy: Move,
+		             moveY: Bool,
+		             yBy: Move
+	             ) {
+		             if (!this.el) {
+			             return
+		             }
+		             if (!moveX && !moveY) {
+			             return
+		             }
+		             if (moveX) {
+			             this.x = moveCoordinates(Px, this.xi += xBy)[0]
+		             }
+		             if (moveY) {
+			             this.y = moveCoordinates(Py, this.yi += yBy)[0]
+		             }
+		             // console.log('x: ' + this.x + '\t\ty: ' + this.y);
+		             // console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
+		             let xiRemainder = getMod24AbsRemainder(this.xi)
+		             let yiRemainder = getMod24AbsRemainder(this.yi)
 
-								 // Have a position, now need to map it to the right frame of matrix
+		             // Have a position, now need to map it to the right frame of matrix
 
-								 // let boundaryX = xiRemainder % 6 == 0
-								 // let boundaryY = yiRemainder % 6 == 0
-								 // if (boundaryX && boundaryY) {
-								 //     console.log('axis-aligned full square');
-								 // }
+		             // let boundaryX = xiRemainder % 6 == 0
+		             // let boundaryY = yiRemainder % 6 == 0
+		             // if (boundaryX && boundaryY) {
+		             //     console.log('axis-aligned full square');
+		             // }
 
-								 this.cb(VALUE_MATRIX[xiRemainder][yiRemainder])
+		             this.cb(VALUE_MATRICES[0][xiRemainder][yiRemainder])
 
-								 console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
+		             console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
 
-								 this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
-							 },
-							 reset() {
-								 if (!this.el) {
-									 return
-								 }
-								 this.xi = 0
-								 this.yi = 0
-								 this.move(0, 0, 0, 0)
-							 }
-						 }
+		             this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
+	             },
+	             reset() {
+		             if (!this.el) {
+			             return
+		             }
+		             this.xi = 0
+		             this.yi = 0
+		             this.move(0, 0, 0, 0)
+	             }
+             }
 
 function getMod24AbsRemainder(num) {
 	let remainder = num % DIVISIONS

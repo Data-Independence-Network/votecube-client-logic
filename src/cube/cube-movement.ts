@@ -1,6 +1,6 @@
 import {
-	populateValueMatrix,
-	VALUE_MATRIX
+	populateValueMatrices,
+	VALUE_MATRICES
 } from './cube-move-matrix'
 
 let Px        = []
@@ -11,7 +11,18 @@ for (let i = 0; i < DIVISIONS; i++) {
 	Px[i] = Py[i] = i * 15
 }
 
-populateValueMatrix()
+export enum Bool {
+	False = 0,
+	True = 1
+}
+
+export enum Move {
+	Down = -1,
+	None = 0,
+	Up = 1
+}
+
+populateValueMatrices()
 
 export interface Position {
 	x: number
@@ -36,10 +47,14 @@ export interface ViewPort {
 	yi: number
 
 	move(
-		moveX: 0 | 1,
-		xBy: -1 | 0 | 1,
-		moveY?: 0 | 1,
-		yBy?: -1 | 0 | 1
+		moveX: Bool,
+		xBy: Move,
+		moveY?: Bool,
+		yBy?: Move
+	)
+
+	moveZoom(
+		zoomIn: Boolean
 	)
 
 	reset(): void
@@ -57,10 +72,10 @@ export const mouse: MousePosition = {
 							 y: 0,
 							 yi: 0,
 							 move(
-								 moveX,
-								 xBy,
-								 moveY,
-								 yBy
+								 moveX: Bool,
+								 xBy: Move,
+								 moveY: Bool,
+								 yBy: Move
 							 ) {
 								 if (!this.el) {
 									 return
@@ -136,7 +151,7 @@ function moveX(
 	x,
 	y
 ) {
-	viewport.move(0, 0, 1, 1)
+	viewport.move(Bool.False, Move.None, Bool.True, Move.Up)
 	move(x, y)
 }
 
@@ -144,7 +159,7 @@ function moveY(
 	x,
 	y
 ) {
-	viewport.move(1, 1)
+	viewport.move(Bool.True, Move.Up)
 	move(x, y)
 }
 */

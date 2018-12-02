@@ -7,7 +7,9 @@ import {
 	pD
 } from '../utils/utils'
 import {
+	Bool,
 	mouse,
+	Move,
 	viewport
 } from './cube-movement'
 
@@ -40,23 +42,23 @@ dLM.ad('keydown', function (ev) {
 	rmMmTm()
 	switch (ev.keyCode) {
 		case 37: // left
-			viewport.move(0, 0, 1, -1)
+			viewport.move(Bool.False, Move.None, Bool.True, Move.Down)
 			break
 
 		case 38: // up
 			// prevent default
 			pD(ev)
-			viewport.move(1, 1)
+			viewport.move(Bool.True, Move.Up)
 			break
 
 		case 39: // right
-			viewport.move(0, 0, 1, 1)
+			viewport.move(Bool.False, Move.None, Bool.True, Move.Up)
 			break
 
 		case 40: // down
 			// prevent default
 			pD(ev)
-			viewport.move(1, -1)
+			viewport.move(Bool.True, Move.Down)
 			break
 
 		case 27: //esc

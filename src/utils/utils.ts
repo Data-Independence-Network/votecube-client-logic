@@ -184,7 +184,7 @@ export function iT(
 	tN?: string, // tag name
 	aM?: boolean  // aggregate match
 ): boolean | IsKnownElementOfTag {
-	if (!t) {
+	if (!tN) {
 		return aM
 	}
 	if (!aM) {

@@ -25,9 +25,14 @@ export const dLM = LM.ad(document)
 
 
 export function setViewPort(
-	el = gQ('#cube')
+	cb?: {
+		(
+			values: number[]
+		): void
+	}
 ): void {
-	viewport.el = el
+	viewport.cb = cb
+	viewport.el = cb ? gQ('#cube') : null
 	// VP.el       = null
 }
 

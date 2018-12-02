@@ -1,4 +1,7 @@
-import {populateValueMatrix} from './cube-move-matrix'
+import {
+	populateValueMatrix,
+	VALUE_MATRIX
+} from './cube-move-matrix'
 
 let Px        = []
 let Py        = []
@@ -21,6 +24,11 @@ export interface MousePosition {
 }
 
 export interface ViewPort {
+	cb: {
+		(
+			values: number[]
+		): void
+	},
 	el: Element | null
 	x: number
 	xi: number
@@ -39,59 +47,61 @@ export interface ViewPort {
 }
 
 export const mouse: MousePosition = {
-	       start: {x: undefined, y: undefined}
-       },
-             viewport: ViewPort   = {
-	             el: null,
-	             x: 0,
-	             xi: 0,
-	             y: 0,
-	             yi: 0,
-	             move(
-		             moveX,
-		             xBy,
-		             moveY,
-		             yBy
-	             ) {
-		             if (!this.el) {
-			             return
-		             }
-		             if (!moveX && !moveY) {
-			             return
-		             }
-		             if (moveX) {
-			             this.x = moveCoordinates(Px, this.xi += xBy)[0]
-		             }
-		             if (moveY) {
-			             this.y = moveCoordinates(Py, this.yi += yBy)[0]
-		             }
-		             // console.log('x: ' + this.x + '\t\ty: ' + this.y);
-		             // console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
-		             let xiRemainder = getMod24AbsRemainder(this.xi)
-		             let yiRemainder = getMod24AbsRemainder(this.yi)
+				 start: {x: undefined, y: undefined}
+			 },
+						 viewport: ViewPort   = {
+							 cb: null,
+							 el: null,
+							 x: 0,
+							 xi: 0,
+							 y: 0,
+							 yi: 0,
+							 move(
+								 moveX,
+								 xBy,
+								 moveY,
+								 yBy
+							 ) {
+								 if (!this.el) {
+									 return
+								 }
+								 if (!moveX && !moveY) {
+									 return
+								 }
+								 if (moveX) {
+									 this.x = moveCoordinates(Px, this.xi += xBy)[0]
+								 }
+								 if (moveY) {
+									 this.y = moveCoordinates(Py, this.yi += yBy)[0]
+								 }
+								 // console.log('x: ' + this.x + '\t\ty: ' + this.y);
+								 // console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
+								 let xiRemainder = getMod24AbsRemainder(this.xi)
+								 let yiRemainder = getMod24AbsRemainder(this.yi)
 
-		             // Have a position, now need to map it to the right frame of matrix
+								 // Have a position, now need to map it to the right frame of matrix
 
-		             // let boundaryX = xiRemainder % 6 == 0
-		             // let boundaryY = yiRemainder % 6 == 0
-		             // if (boundaryX && boundaryY) {
-		             //     console.log('axis-aligned full square');
-		             // }
+								 // let boundaryX = xiRemainder % 6 == 0
+								 // let boundaryY = yiRemainder % 6 == 0
+								 // if (boundaryX && boundaryY) {
+								 //     console.log('axis-aligned full square');
+								 // }
 
-		             // setDisplayedSurfacePercentages(VALUE_MATRIX[xiRemainder][yiRemainder])
-		             console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
+								 this.cb(VALUE_MATRIX[xiRemainder][yiRemainder])
 
-		             this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
-	             },
-	             reset() {
-		             if (!this.el) {
-			             return
-		             }
-		             this.xi = 0
-		             this.yi = 0
-		             this.move(0, 0, 0, 0)
-	             }
-             }
+								 console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
+
+								 this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
+							 },
+							 reset() {
+								 if (!this.el) {
+									 return
+								 }
+								 this.xi = 0
+								 this.yi = 0
+								 this.move(0, 0, 0, 0)
+							 }
+						 }
 
 function getMod24AbsRemainder(num) {
 	let remainder = num % DIVISIONS
@@ -155,7 +165,7 @@ viewport.duration = function () {
 var DISPLAYED_SURFACE_PERCENTAGES = [gQ('#n0'), gQ('#n1'), gQ('#n2'), gQ('#n3'), gQ('#n4'), gQ('#n5')]
 
 function setDisplayedSurfacePercentages(
-	values: string[]
+	values: number[]
 ) {
 	for (let i = 0; i < 6; i++) {
 		DISPLAYED_SURFACE_PERCENTAGES[i].innerText = values[i]

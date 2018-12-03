@@ -5,11 +5,12 @@
   "engines": {
     "node": ">= 10.0"
   },
-  "main": "dist/bundle.js",
+  "main": "lib/index.js",
+  "types": "src/index.ts",
   "scripts": {},
   "devDependencies": {
     "ts-loader": "^5.3.0",
-    "typescript": "3.1.6",
+    "typescript": "^3.2.1",
     "webpack": "^4.26.0",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"

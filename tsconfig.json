@@ -5,7 +5,8 @@
     "module": "esnext",
     "inlineSources": true,
     "moduleResolution": "node",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "outDir": "lib"
   },
   "exclude": [
     "node_modules",

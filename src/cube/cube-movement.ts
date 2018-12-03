@@ -3,8 +3,8 @@ import {
 	VALUE_MATRICES
 } from './cube-move-matrix'
 
-let Px        = []
-let Py        = []
+export const Px        = []
+export const Py        = []
 let DIVISIONS = 24
 
 for (let i = 0; i < DIVISIONS; i++) {
@@ -34,96 +34,31 @@ export interface MousePosition {
 	start: Position
 }
 
-export interface ViewPort {
-	cb: {
-		(
-			values: number[]
-		): void
-	},
-	el: Element | null
-	x: number
-	xi: number
-	y: number
-	yi: number
-
-	move(
-		moveX: Bool,
-		xBy: Move,
-		moveY?: Bool,
-		yBy?: Move
-	)
-
-	changeZoom(
-		zoomIn: Bool
-	)
-
-	reset(): void
-
+export enum MoveIncrement {
+	FORTY_FIVE = 45,
+	FIFTEEN    = 15,
+	FIVE       = 5,
 }
 
+export enum ZoomLevel {
+	BROAD  = 45,
+	COARSE = 15,
+	FINE   = 5,
+}
+
+export interface ValuesOutCallback {
+	(values: number[]): void
+}
+
+
+
 export const mouse: MousePosition = {
-	       start: {x: undefined, y: undefined}
-       },
-             viewport: ViewPort   = {
-	             cb: null,
-	             el: null,
-	             x: 0,
-	             xi: 0,
-	             y: 0,
-	             yi: 0,
-	             changeZoom(
-		             zoomIn: Bool
-	             ) {
-		             console.log('TODO: implement')
-	             },
-	             move(
-		             moveX: Bool,
-		             xBy: Move,
-		             moveY: Bool,
-		             yBy: Move
-	             ) {
-		             if (!this.el) {
-			             return
-		             }
-		             if (!moveX && !moveY) {
-			             return
-		             }
-		             if (moveX) {
-			             this.x = moveCoordinates(Px, this.xi += xBy)[0]
-		             }
-		             if (moveY) {
-			             this.y = moveCoordinates(Py, this.yi += yBy)[0]
-		             }
-		             // console.log('x: ' + this.x + '\t\ty: ' + this.y);
-		             // console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
-		             let xiRemainder = getMod24AbsRemainder(this.xi)
-		             let yiRemainder = getMod24AbsRemainder(this.yi)
+	start: {x: undefined, y: undefined}
+};
 
-		             // Have a position, now need to map it to the right frame of matrix
 
-		             // let boundaryX = xiRemainder % 6 == 0
-		             // let boundaryY = yiRemainder % 6 == 0
-		             // if (boundaryX && boundaryY) {
-		             //     console.log('axis-aligned full square');
-		             // }
 
-		             this.cb(VALUE_MATRICES[0][xiRemainder][yiRemainder])
-
-		             console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
-
-		             this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
-	             },
-	             reset() {
-		             if (!this.el) {
-			             return
-		             }
-		             this.xi = 0
-		             this.yi = 0
-		             this.move(0, 0, 0, 0)
-	             }
-             }
-
-function getMod24AbsRemainder(num) {
+export function getMod24AbsRemainder(num) {
 	let remainder = num % DIVISIONS
 	if (remainder < 0) {
 		remainder = 24 + remainder
@@ -195,7 +130,7 @@ function setDisplayedSurfacePercentages(
 
 // setDisplayedSurfacePercentages(VALUE_MATRIX[0][0])
 
-function moveCoordinates(
+export function moveCoordinates(
 	percentArray: number[],
 	currentIndex: number
 ) {

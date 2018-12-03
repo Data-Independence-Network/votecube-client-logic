@@ -5,13 +5,18 @@ import {
 	iT,
 	LM,
 	pD
-} from '../utils/utils'
+}                    from '../utils/utils'
 import {
 	Bool,
 	mouse,
 	Move,
-	viewport
-} from './cube-movement'
+	ValuesOutCallback
+}                    from './cube-movement'
+import {
+	mutationApi,
+	MutationApi
+} from './mutation-api'
+import {viewport}    from './viewport'
 
 export interface MoveViewportEvent {
 	x: number;
@@ -27,15 +32,13 @@ export const dLM = LM.ad(document)
 
 
 export function setViewPort(
-	cb?: {
-		(
-			values: number[]
-		): void
-	}
-): void {
+	cb?: ValuesOutCallback
+): MutationApi {
+	viewport.reset()
 	viewport.cb = cb
 	viewport.el = cb ? gQ('#cube') : null
-	// VP.el       = null
+
+	return mutationApi
 }
 
 dLM.ad('keydown', function (ev) {

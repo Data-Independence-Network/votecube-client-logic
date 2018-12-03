@@ -1,8 +1,14 @@
-export async function setViewImport() {
+import {ValuesOutCallback} from './cube/cube-movement'
+import {MutationApi}       from './cube/mutation-api'
+
+export async function setViewImport(
+	cb?: ValuesOutCallback
+): Promise<MutationApi> {
 	const eventListener = await import ('./cube/event-listener')
-	eventListener.setViewPort(null)
+
+	return eventListener.setViewPort(cb)
 }
 
-export function devLoad() {
+export function devLoad(): void {
 	console.log('vc-client-logic devLoad')
 }

@@ -1,6 +1,5 @@
 import {
 	populateValueMatrices,
-	VALUE_MATRICES
 } from './cube-move-matrix'
 
 export const Px        = []

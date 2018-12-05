@@ -95,7 +95,7 @@ export const viewport: ViewPort = {
 		//     console.log('axis-aligned full square');
 		// }
 
-		this.cb(VALUE_MATRICES[0][xiRemainder][yiRemainder])
+		this.cb(VALUE_MATRICES[1][xiRemainder][yiRemainder])
 
 		console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
 

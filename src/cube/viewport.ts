@@ -1,12 +1,12 @@
 import {VALUE_MATRICES} from './cube-move-matrix'
 import {
 	Bool,
-	getMod24AbsRemainder,
+	getModXAbsRemainder,
 	Move,
 	moveCoordinates,
 	MoveIncrement,
-	Px,
-	Py,
+	Pxs,
+	Pys,
 	ValuesOutCallback,
 	ZoomLevel
 } from './cube-movement'
@@ -15,6 +15,7 @@ export interface ViewPort {
 
 	cb: ValuesOutCallback,
 	el: Element | null
+	idx: 0 | 1 | 2
 	increment: MoveIncrement
 	x: number
 	xi: number
@@ -40,12 +41,13 @@ export interface ViewPort {
 export const viewport: ViewPort = {
 	cb: null,
 	el: null,
-	increment: MoveIncrement.FIFTEEN,
+	idx: 2,
+	increment: MoveIncrement.FIVE,
 	x: 0,
 	xi: 0,
 	y: 0,
 	yi: 0,
-	zoom: ZoomLevel.COARSE,
+	zoom: ZoomLevel.FINE,
 	changeZoom(
 		zoomLevel: ZoomLevel
 	): void {
@@ -77,15 +79,15 @@ export const viewport: ViewPort = {
 			return
 		}
 		if (moveX) {
-			this.x = moveCoordinates(Px, this.xi += xBy)[0]
+			this.x = moveCoordinates(Pxs, this.idx, this.xi += xBy)[0]
 		}
 		if (moveY) {
-			this.y = moveCoordinates(Py, this.yi += yBy)[0]
+			this.y = moveCoordinates(Pys, this.idx, this.yi += yBy)[0]
 		}
 		// console.log('x: ' + this.x + '\t\ty: ' + this.y);
 		// console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
-		let xiRemainder = getMod24AbsRemainder(this.xi)
-		let yiRemainder = getMod24AbsRemainder(this.yi)
+		let xiRemainder = getModXAbsRemainder(this.xi, this.increment)
+		let yiRemainder = getModXAbsRemainder(this.yi, this.increment)
 
 		// Have a position, now need to map it to the right frame of matrix
 
@@ -95,7 +97,7 @@ export const viewport: ViewPort = {
 		//     console.log('axis-aligned full square');
 		// }
 
-		this.cb(VALUE_MATRICES[1][xiRemainder][yiRemainder])
+		this.cb(VALUE_MATRICES[this.idx][xiRemainder][yiRemainder])
 
 		console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
 
@@ -105,10 +107,10 @@ export const viewport: ViewPort = {
 		if (!this.el) {
 			return
 		}
-		this.increment = MoveIncrement.FIFTEEN
+		this.increment = MoveIncrement.FIVE
 		this.xi        = 0
 		this.yi        = 0
-		this.zoom      = ZoomLevel.COARSE
+		this.zoom      = ZoomLevel.FINE
 		this.move(0, 0, 0, 0)
 	}
 }

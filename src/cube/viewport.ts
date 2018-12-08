@@ -41,13 +41,13 @@ export interface ViewPort {
 export const viewport: ViewPort = {
 	cb: null,
 	el: null,
-	idx: 2,
-	increment: MoveIncrement.FIVE,
+	idx: 1,
+	increment: MoveIncrement.FIFTEEN,
 	x: 0,
 	xi: 0,
 	y: 0,
 	yi: 0,
-	zoom: ZoomLevel.FINE,
+	zoom: ZoomLevel.COARSE,
 	changeZoom(
 		zoomLevel: ZoomLevel
 	): void {

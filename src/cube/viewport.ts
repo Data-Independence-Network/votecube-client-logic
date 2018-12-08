@@ -1,14 +1,16 @@
-import {VALUE_MATRICES} from './cube-move-matrix'
+import {
+	MoveIncrement,
+	MV_INC_IDX,
+	VALUE_MATRICES
+} from './cube-move-matrix'
 import {
 	Bool,
 	getModXAbsRemainder,
 	Move,
 	moveCoordinates,
-	MoveIncrement,
 	Pxs,
 	Pys,
-	ValuesOutCallback,
-	ZoomLevel
+	ValuesOutCallback
 } from './cube-movement'
 
 export interface ViewPort {
@@ -21,7 +23,7 @@ export interface ViewPort {
 	xi: number
 	y: number
 	yi: number
-	zoom: ZoomLevel
+	// zoom: ZoomLevel
 
 	move(
 		moveX: Bool,
@@ -31,7 +33,8 @@ export interface ViewPort {
 	): void
 
 	changeZoom(
-		zoomLevel: ZoomLevel
+		// zoomLevel: ZoomLevel
+		increment: MoveIncrement
 	): void
 
 	reset(): void
@@ -41,29 +44,30 @@ export interface ViewPort {
 export const viewport: ViewPort = {
 	cb: null,
 	el: null,
-	idx: 1,
-	increment: MoveIncrement.FIFTEEN,
+	idx: MV_INC_IDX[MoveIncrement.FIVE],
+	increment: MoveIncrement.FIVE,
 	x: 0,
 	xi: 0,
 	y: 0,
 	yi: 0,
-	zoom: ZoomLevel.COARSE,
+	// zoom: ZoomLevel.FINE,
 	changeZoom(
-		zoomLevel: ZoomLevel
+		increment: MoveIncrement
 	): void {
-		this.zoom = zoomLevel
-		let moveIncrement: MoveIncrement
-		switch (zoomLevel) {
-			case ZoomLevel.BROAD:
-				moveIncrement = MoveIncrement.FORTY_FIVE
-				break
-			case ZoomLevel.COARSE:
-				moveIncrement = MoveIncrement.FIFTEEN
-				break
-			case ZoomLevel.FINE:
-				moveIncrement = MoveIncrement.FIVE
-				break
-		}
+		// this.zoom = zoomLevel
+		this.increment = increment
+		// let moveIncrement: MoveIncrement
+		// switch (increment) {
+		// 	case ZoomLevel.BROAD:
+		// 		moveIncrement = MoveIncrement.FORTY_FIVE
+		// 		break
+		// 	case ZoomLevel.COARSE:
+		// 		moveIncrement = MoveIncrement.FIFTEEN
+		// 		break
+		// 	case ZoomLevel.FINE:
+		// 		moveIncrement = MoveIncrement.FIVE
+		// 		break
+		// }
 		console.log('TODO: implement')
 	},
 	move(
@@ -110,7 +114,7 @@ export const viewport: ViewPort = {
 		this.increment = MoveIncrement.FIVE
 		this.xi        = 0
 		this.yi        = 0
-		this.zoom      = ZoomLevel.FINE
+		// this.zoom      = ZoomLevel.FINE
 		this.move(0, 0, 0, 0)
 	}
 }

@@ -1,5 +1,6 @@
 import {
 	MOVE_INCREMENTS,
+	MoveIncrement,
 	MV_INC_IDX,
 	NUM_DIVISIONS,
 	populateValueMatrices,
@@ -39,18 +40,6 @@ export interface Position {
 export interface MousePosition {
 	last?: Position
 	start: Position
-}
-
-export enum MoveIncrement {
-	FORTY_FIVE = 45,
-	FIFTEEN    = 15,
-	FIVE       = 5,
-}
-
-export enum ZoomLevel {
-	BROAD  = 45,
-	COARSE = 15,
-	FINE   = 5,
 }
 
 export interface ValuesOutCallback {

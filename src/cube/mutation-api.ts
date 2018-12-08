@@ -1,8 +1,10 @@
-import {ZoomLevel} from './cube-movement'
+import {
+	ZoomIndex
+} from './cube-move-matrix'
 import {
 	ViewPort,
 	viewport
-}                  from './viewport'
+} from './viewport'
 
 export class MutationApi {
 
@@ -12,7 +14,7 @@ export class MutationApi {
 	}
 
 	changeZoom(
-		zoomLevel: ZoomLevel
+		zoomIndex: ZoomIndex
 	): void {
 
 	}

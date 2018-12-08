@@ -1,22 +1,44 @@
 export const VALUE_MATRICES = [[], [], []]
 
-export const NUM_DIVISIONS = [8, 24, 72]
+export enum MoveIncrement {
+	FORTY_FIVE = 45,
+	FIFTEEN    = 15,
+	FIVE       = 5,
+}
 
-export const MOVE_INCREMENTS = [45, 15, 5]
+/*
+export enum ZoomLevel {
+	BROAD  = 45,
+	COARSE = 15,
+	FINE   = 5,
+}
+*/
 
-export const MV_INC_IDX = {
-	45: 0,
-	15: 1,
-	5:  2,
+export type NumDivisions = 8 | 24 | 72
+
+export const NUM_DIVISIONS: NumDivisions[] = [8, 24, 72]
+
+export const MOVE_INCREMENTS = [
+	MoveIncrement.FORTY_FIVE,
+	MoveIncrement.FIFTEEN,
+	MoveIncrement.FIVE
+]
+
+export type ZoomIndex = 0 | 1 | 2
+
+export const MV_INC_IDX: { [key: string]: ZoomIndex } = {
+	[MoveIncrement.FORTY_FIVE]: 0,
+	[MoveIncrement.FIFTEEN]: 1,
+	[MoveIncrement.FIVE]: 2,
 }
 
 //  4   0   1
 const fiveDegreeValueTemplate = [
-	[[0, 0, 100], [0, 0, 100], [0, 0, 100], [6, 0, 94], [13, 0, 87], [20, 0, 80],[28, 0, 72], [35, 0, 65], [42, 0, 58], [50, 0, 50]],
-	[[0, 0, 100], [0, 0, 100], [0, 0, 100], [6, 0, 94], [13, 0, 87], [20, 0, 80],  [28, 0, 72], [35, 0, 65], [42, 0, 58], [50, 0, 50]],
-	[[0, 0, 100], [0, 0, 100], [0, 0, 100], [6, 0, 94], [13, 0, 87], [20, 0, 80],  [28, 0, 72], [35, 0, 65], [42, 0, 58], [50, 0, 50]],
-	[[0, 6, 94], [0, 6, 94], [0, 6, 94], [5, 6, 89], [12, 6, 82], [19, 6, 75], [26, 6, 68],  [33, 6, 61], [40, 6, 54], [47, 6, 47]],
-	[[0, 13, 87], [0, 13, 87], [0, 13, 87], [5, 13, 82], [11, 13, 76], [18, 13, 69], [26, 12, 62], [31, 12, 57], [37, 12, 51],[44, 12, 44]],
+	[[0, 0, 100], [0, 0, 100], [0, 0, 100], [6, 0, 94], [13, 0, 87], [20, 0, 80], [28, 0, 72], [35, 0, 65], [42, 0, 58], [50, 0, 50]],
+	[[0, 0, 100], [0, 0, 100], [0, 0, 100], [6, 0, 94], [13, 0, 87], [20, 0, 80], [28, 0, 72], [35, 0, 65], [42, 0, 58], [50, 0, 50]],
+	[[0, 0, 100], [0, 0, 100], [0, 0, 100], [6, 0, 94], [13, 0, 87], [20, 0, 80], [28, 0, 72], [35, 0, 65], [42, 0, 58], [50, 0, 50]],
+	[[0, 6, 94], [0, 6, 94], [0, 6, 94], [5, 6, 89], [12, 6, 82], [19, 6, 75], [26, 6, 68], [33, 6, 61], [40, 6, 54], [47, 6, 47]],
+	[[0, 13, 87], [0, 13, 87], [0, 13, 87], [5, 13, 82], [11, 13, 76], [18, 13, 69], [26, 12, 62], [31, 12, 57], [37, 12, 51], [44, 12, 44]],
 	[[0, 20, 80], [0, 21, 79], [0, 21, 79], [4, 21, 75], [10, 20, 70], [16, 20, 64], [22, 19, 59], [28, 19, 53], [34, 19, 47], [40, 20, 40] /*41,19,41*/],
 	[[0, 28, 72], [0, 28, 72], [0, 28, 72], [3, 28, 69], [9, 27, 66], [14, 27, 59], [20, 26, 54], [26, 26, 48], [31, 26, 43], [37, 26, 37]],
 	[[0, 35, 65], [0, 35, 65], [0, 36, 64], [2, 35, 63], [7, 35, 58], [13, 34, 53], [18, 33, 49], [23, 33, 44], [28, 33, 39], [34, 32, 34] /*34, 33, 34*/],
@@ -53,7 +75,7 @@ const fortyFiveDegreeValueTemplate = [
 	[[0, 100, 0], [0, 100, 0]]
 ]
 
-const fortyFiveDegreeCombinations = [[100, 0, 0], [50, 50, 0], [33, 33, 33]];
+const fortyFiveDegreeCombinations = [[100, 0, 0], [50, 50, 0], [33, 33, 33]]
 
 const matrixValueTemplates = [
 	fortyFiveDegreeValueTemplate,
@@ -142,7 +164,7 @@ export function populateValueMatrix(
 	endY: number
 ) {
 	const numDivisions = NUM_DIVISIONS[matrixIndex]
-	const valueMatrix    = VALUE_MATRICES[matrixIndex]
+	const valueMatrix  = VALUE_MATRICES[matrixIndex]
 
 	for (let i = 0; i < numDivisions; i++) {
 		const xSubMatrix = []
@@ -173,8 +195,8 @@ export function populateValueMatrix(
 			for (let y = 0;
 			     isPositiveDirectionY ? y < loopEndY : y > loopEndY;
 			     isPositiveDirectionY ? y++ : y--) {
-				const yValueTemplate                      = xValueTemplate[Math.abs(y)]
-				const values                              = [0, 0, 0, 0, 0, 0]
+				const yValueTemplate                    = xValueTemplate[Math.abs(y)]
+				const values                            = [0, 0, 0, 0, 0, 0]
 				values[subMatrixPositions[0]]           = yValueTemplate[0]
 				values[subMatrixPositions[1]]           = yValueTemplate[1]
 				values[subMatrixPositions[2]]           = yValueTemplate[2]

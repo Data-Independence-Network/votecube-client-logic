@@ -4,6 +4,7 @@ import {
 	MV_INC_IDX,
 	NUM_DIVISIONS,
 	populateValueMatrices,
+	ZoomIndex,
 } from './cube-move-matrix'
 
 export const Pxs = [[], [], []]
@@ -131,7 +132,7 @@ function setDisplayedSurfacePercentages(
 
 export function moveCoordinates(
 	percentArrays: number[][],
-	incrementIndex: 0 | 1 | 2,
+	zoomIndex: ZoomIndex,
 	currentIndex: number
 ) {
 	let multiplier = 1
@@ -139,7 +140,7 @@ export function moveCoordinates(
 		multiplier   = -1
 		currentIndex = -currentIndex
 	}
-	let divisions = NUM_DIVISIONS[incrementIndex]
+	let divisions = NUM_DIVISIONS[zoomIndex]
 	let page  = Math.floor(currentIndex / divisions)
 	let index = currentIndex % divisions
 
@@ -148,7 +149,7 @@ export function moveCoordinates(
 		index = 0
 	}
 
-	let angle = percentArrays[incrementIndex][index]
+	let angle = percentArrays[zoomIndex][index]
 
 	let rotation = (page * 360 + angle) * multiplier
 

@@ -1,7 +1,9 @@
 import {
+	MOVE_INCREMENTS,
 	MoveIncrement,
 	MV_INC_IDX,
-	VALUE_MATRICES
+	VALUE_MATRICES,
+	ZoomIndex
 } from './cube-move-matrix'
 import {
 	Bool,
@@ -17,7 +19,7 @@ export interface ViewPort {
 
 	cb: ValuesOutCallback,
 	el: Element | null
-	idx: 0 | 1 | 2
+	idx: ZoomIndex
 	increment: MoveIncrement
 	x: number
 	xi: number
@@ -34,7 +36,7 @@ export interface ViewPort {
 
 	changeZoom(
 		// zoomLevel: ZoomLevel
-		increment: MoveIncrement
+		zoomIndex: ZoomIndex
 	): void
 
 	reset(): void
@@ -52,10 +54,10 @@ export const viewport: ViewPort = {
 	yi: 0,
 	// zoom: ZoomLevel.FINE,
 	changeZoom(
-		increment: MoveIncrement
+		zoomIndex: ZoomIndex
 	): void {
 		// this.zoom = zoomLevel
-		this.increment = increment
+		this.increment = MOVE_INCREMENTS[zoomIndex]
 		// let moveIncrement: MoveIncrement
 		// switch (increment) {
 		// 	case ZoomLevel.BROAD:

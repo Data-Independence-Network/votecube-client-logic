@@ -4,18 +4,18 @@ import {
 	iT,
 	LM,
 	pD
-}                    from '../utils/utils'
+}                 from '../utils/utils'
 import {
 	Bool,
 	mouse,
 	Move,
 	ValuesOutCallback
-}                    from './cube-movement'
+}                 from './cube-movement'
 import {
 	mutationApi,
 	MutationApi
-} from './mutation-api'
-import {viewport}    from './viewport'
+}                 from './mutation-api'
+import {viewport} from './viewport'
 
 export interface MoveViewportEvent {
 	x: number;
@@ -37,7 +37,7 @@ export function setViewPort(
 	viewport.cb = cb
 	viewport.el = cb ? gQ('#cube') : null
 
-	return mutationApi
+	return cb ? mutationApi : null
 }
 
 dLM.ad('keydown', function (ev) {
@@ -63,7 +63,7 @@ dLM.ad('keydown', function (ev) {
 			viewport.move(Bool.True, Move.Down)
 			break
 
-		case 27: //esc
+		case 27: // esc
 			viewport.reset()
 			break
 		case 109:
@@ -177,7 +177,7 @@ function moveViewport(
 
 	if (!mouse.last) {
 		mouse.last = lastCoords = mouse.start
-		lastMove = now
+		lastMove   = now
 		// vx = directionVector(startCoords.x, newMouseLocation.x)
 		// vy = directionVector(startCoords.y, newMouseLocation.y)
 		// } else {

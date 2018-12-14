@@ -7,9 +7,11 @@ import {
 } from './cube-move-matrix'
 import {
 	Bool,
+	Direction,
 	getModXAbsRemainder,
 	Move,
 	moveCoordinates,
+	PositionPercent,
 	Pxs,
 	Pys,
 	ValuesOutCallback
@@ -18,14 +20,16 @@ import {
 export interface ViewPort {
 
 	cb: ValuesOutCallback,
+	cr: CubeRotation,
 	el: Element | null
-	idx: ZoomIndex
 	increment: MoveIncrement
+	pp: PositionPercentages
 	x: number
 	xi: number
 	y: number
 	yi: number
-	// zoom: ZoomLevel
+	vd: VisibleDirection,
+	zm: ZoomIndex
 
 	move(
 		moveX: Bool,
@@ -43,15 +47,47 @@ export interface ViewPort {
 
 }
 
+export interface PositionPercentages {
+	xA: PositionPercent,
+	xB: PositionPercent,
+	yA: PositionPercent,
+	yB: PositionPercent,
+	zA: PositionPercent,
+	zB: PositionPercent,
+}
+
+export interface CubeRotation {
+	x: number,
+	y: number
+}
+
+export interface VisibleDirection {
+	x: Direction,
+	y: Direction,
+	z: Direction
+}
+
 export const viewport: ViewPort = {
 	cb: null,
+	cr: {
+		x: 0,
+		y: 0
+	},
 	el: null,
-	idx: MV_INC_IDX[MoveIncrement.FIVE],
 	increment: MoveIncrement.FIVE,
+	pp: {
+		xA: 0,
+		xB: 0,
+		yA: 0,
+		yB: 0,
+		zA: 100,
+		zB: 0
+	},
 	x: 0,
 	xi: 0,
 	y: 0,
 	yi: 0,
+	zm: MV_INC_IDX[MoveIncrement.FIVE],
 	// zoom: ZoomLevel.FINE,
 	changeZoom(
 		zoomIndex: ZoomIndex
@@ -120,3 +156,5 @@ export const viewport: ViewPort = {
 		this.move(0, 0, 0, 0)
 	}
 }
+
+viewPort

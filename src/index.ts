@@ -12,3 +12,5 @@ export async function setViewImport(
 export function devLoad(): void {
 	console.log('vc-client-logic devLoad')
 }
+
+export {IMutationApi} from './cube/mutation-api'

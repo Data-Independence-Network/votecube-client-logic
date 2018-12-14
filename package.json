@@ -1,6 +1,6 @@
 {
   "name": "votecube-client-logic",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A brand new Glimmer app.",
   "engines": {
     "node": ">= 10.0"

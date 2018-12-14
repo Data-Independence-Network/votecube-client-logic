@@ -1,12 +1,23 @@
+import {ZoomIndex} from './cube-move-matrix'
 import {
-	ZoomIndex
-} from './cube-move-matrix'
+	Direction,
+	PositionPercent
+}                  from './cube-movement'
 import {
 	ViewPort,
 	viewport
-} from './viewport'
+}                  from './viewport'
 
-export class MutationApi {
+export interface IMutationApi {
+
+	changeZoom(
+		zoomIndex: ZoomIndex
+	): void
+
+}
+
+export class MutationApi
+	implements IMutationApi {
 
 	constructor(
 		private vp: ViewPort
@@ -16,8 +27,52 @@ export class MutationApi {
 	changeZoom(
 		zoomIndex: ZoomIndex
 	): void {
-
+		this.vp.zm = zoomIndex
 	}
+
+	moveX(
+		direction: Direction
+	): void {
+		let percentChange;
+		switch (this.vp.zm) {
+			case 0:
+				percentChange = 20;
+				break;
+			case 1:
+				percentChange = 5;
+				break;
+			case 2:
+				percentChange = 1;
+				break;
+		}
+		if()
+	}
+
+	moveXToPercent(
+		movePercent: PositionPercent
+	) {
+	}
+
+	moveY(
+		direction: Direction
+	): void {
+	}
+
+	moveYToPercent(
+		movePercent: PositionPercent
+	) {
+	}
+
+	moveZ(
+		direction: Direction
+	): void {
+	}
+
+	moveZToPercent(
+		movePercent: PositionPercent
+	) {
+	}
+
 
 }
 

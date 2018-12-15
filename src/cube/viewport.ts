@@ -48,12 +48,14 @@ export interface ViewPort {
 }
 
 export interface PositionPercentages {
-	xA: PositionPercent,
-	xB: PositionPercent,
-	yA: PositionPercent,
-	yB: PositionPercent,
-	zA: PositionPercent,
-	zB: PositionPercent,
+	x: DimensionPercentages
+	y: DimensionPercentages
+	z: DimensionPercentages
+}
+
+export interface DimensionPercentages {
+	minus: PositionPercent
+	plus: PositionPercent
 }
 
 export interface CubeRotation {
@@ -76,17 +78,28 @@ export const viewport: ViewPort = {
 	el: null,
 	increment: MoveIncrement.FIVE,
 	pp: {
-		xA: 0,
-		xB: 0,
-		yA: 0,
-		yB: 0,
-		zA: 100,
-		zB: 0
+		x: {
+			minus: 0,
+			plus: 0
+		},
+		y: {
+			minus: 0,
+			plus: 0
+		},
+		z: {
+			minus: 0,
+			plus: 100
+		}
 	},
 	x: 0,
 	xi: 0,
 	y: 0,
 	yi: 0,
+	vd: {
+		x: 1,
+		y: 1,
+		z: 1
+	},
 	zm: MV_INC_IDX[MoveIncrement.FIVE],
 	// zoom: ZoomLevel.FINE,
 	changeZoom(
@@ -156,5 +169,3 @@ export const viewport: ViewPort = {
 		this.move(0, 0, 0, 0)
 	}
 }
-
-viewPort

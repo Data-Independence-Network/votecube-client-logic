@@ -34,24 +34,40 @@ export class MutationApi
 	moveX(
 		direction: Direction
 	): void {
-		const x = this.vp.pp.x
-		if (!this.isChangeAllowed(direction, x)) {
-			return
-		}
-		let percentChange = this.getPercentChange()
-		let nextStep
-		switch (direction) {
-			case 1:
-				nextStep = this.getNextStep(x.plus, x.minus, direction)
-				break
-			case -1:
-				nextStep = this.getNextStep(x.minus, x.plus, direction)
-				break
-		}
-		let moveToPercent = nextStep[0] * percentChange
+		this.move('x', direction)
 	}
 
-	move(
+	moveXToPercent(
+		movePercent: PositionPercent
+	) {
+		this.moveToPercent('x', movePercent, this.vp.vd.x)
+	}
+
+	moveY(
+		direction: Direction
+	): void {
+		this.move('y', direction)
+	}
+
+	moveYToPercent(
+		movePercent: PositionPercent
+	) {
+		this.moveToPercent('y', movePercent, this.vp.vd.y)
+	}
+
+	moveZ(
+		direction: Direction
+	): void {
+		this.move('z', direction)
+	}
+
+	moveZToPercent(
+		movePercent: PositionPercent
+	) {
+		this.moveToPercent('z', movePercent, this.vp.vd.z)
+	}
+
+	private move(
 		dimension: 'x' | 'y' | 'z',
 		direction: Direction
 		// dimensionPercentages: DimensionPercentages
@@ -73,7 +89,7 @@ export class MutationApi
 				break
 		}
 
-		this.moveToPercent(
+		this.moveToPercent(dimension,
 			nextStep[0] * percentChange as PositionPercent, nextStep[1]);
 	}
 
@@ -95,7 +111,7 @@ export class MutationApi
 		}
 	}
 
-	getPercentChange(): 1 | 5 | 20 {
+	private getPercentChange(): 1 | 5 | 20 {
 		switch (this.vp.zm) {
 			case 0:
 				return 20
@@ -106,7 +122,7 @@ export class MutationApi
 		}
 	}
 
-	isChangeAllowed(
+	private isChangeAllowed(
 		direction: Direction,
 		dimensionPercentages: DimensionPercentages
 	): boolean {
@@ -117,37 +133,12 @@ export class MutationApi
 		return currentValue !== 100
 	}
 
-	moveXToPercent(
-		movePercent: PositionPercent
-	) {
-	}
-
-	moveToPercent(
+	private moveToPercent(
 		dimension: 'x' | 'y' | 'z',
 		percent: PositionPercent,
 		direction: Direction
 	): void {
 
-	}
-
-	moveY(
-		direction: Direction
-	): void {
-	}
-
-	moveYToPercent(
-		movePercent: PositionPercent
-	) {
-	}
-
-	moveZ(
-		direction: Direction
-	): void {
-	}
-
-	moveZToPercent(
-		movePercent: PositionPercent
-	) {
 	}
 
 

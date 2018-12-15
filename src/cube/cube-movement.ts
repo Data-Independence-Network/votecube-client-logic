@@ -159,10 +159,10 @@ export function moveCoordinates(
 	let page  = Math.floor(currentIndex / divisions)
 	let index = currentIndex % divisions
 
-	if (index === divisions) {
-		page++
-		index = 0
-	}
+	// if (index === divisions) {
+	// 	page++
+	// 	index = 0
+	// }
 
 	let angle = percentArrays[zoomIndex][index]
 

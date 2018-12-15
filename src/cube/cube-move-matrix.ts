@@ -187,14 +187,14 @@ export function populateValueMatrix(
 		const loopEndX             = moveSubMatrix[0] == 1 ? endX : -endX
 		const isPositiveDirectionX = moveSubMatrix[0] == 1 ? 1 : 0
 		for (let x = 0;
-		     isPositiveDirectionX ? x < loopEndX : x > loopEndX;
-		     isPositiveDirectionX ? x++ : x--) {
+				 isPositiveDirectionX ? x < loopEndX : x > loopEndX;
+				 isPositiveDirectionX ? x++ : x--) {
 			const loopEndY             = moveSubMatrix[1] == 1 ? endY : -endY
 			const isPositiveDirectionY = moveSubMatrix[1] == 1 ? 1 : 0
 			const xValueTemplate       = matrixValueTemplate[Math.abs(x)]
 			for (let y = 0;
-			     isPositiveDirectionY ? y < loopEndY : y > loopEndY;
-			     isPositiveDirectionY ? y++ : y--) {
+					 isPositiveDirectionY ? y < loopEndY : y > loopEndY;
+					 isPositiveDirectionY ? y++ : y--) {
 				const yValueTemplate                    = xValueTemplate[Math.abs(y)]
 				const values                            = [0, 0, 0, 0, 0, 0]
 				values[subMatrixPositions[0]]           = yValueTemplate[0]
@@ -204,5 +204,14 @@ export function populateValueMatrix(
 					[(positionStartY + y) % numDivisions] = values
 			}
 		}
+	}
+
+	for (let i = 0; i < valueMatrix.length; i++) {
+		let line = '['
+		for (let j = 0; j < valueMatrix[i].length; j++) {
+			let values = valueMatrix[i][j]
+			line += `[${values[0]},${values[1]},${values[2]},${values[3]},${values[4]},${values[5]}],`
+		}
+		console.log(line)
 	}
 }

@@ -38,6 +38,8 @@ export interface ViewPort {
 		yBy?: Move
 	): void
 
+	moveToDegree(): void
+
 	changeZoom(
 		// zoomLevel: ZoomLevel
 		zoomIndex: ZoomIndex
@@ -118,7 +120,7 @@ export const viewport: ViewPort = {
 		// 	case ZoomLevel.FINE:
 		// 		moveIncrement = MoveIncrement.FIVE
 		// 		break
-		// }
+		// }moveCoordinates
 		console.log('TODO: implement')
 	},
 	move(
@@ -134,10 +136,10 @@ export const viewport: ViewPort = {
 			return
 		}
 		if (moveX) {
-			this.x = moveCoordinates(Pxs, this.idx, this.xi += xBy)[0]
+			this.x = moveCoordinates(Pxs, this.zm, this.xi += xBy)[0]
 		}
 		if (moveY) {
-			this.y = moveCoordinates(Pys, this.idx, this.yi += yBy)[0]
+			this.y = moveCoordinates(Pys, this.zm, this.yi += yBy)[0]
 		}
 		// console.log('x: ' + this.x + '\t\ty: ' + this.y);
 		// console.log('xi: ' + this.xi + '\t\tyi: ' + this.yi);
@@ -156,6 +158,12 @@ export const viewport: ViewPort = {
 
 		console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
 
+		this.moveToDegree()
+	},
+	/**
+	 * Need to be able to move to a particular angle
+	 */
+	moveToDegree(): void {
 		this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
 	},
 	reset(): void {

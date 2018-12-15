@@ -141,7 +141,6 @@ export class MutationApi
 
 	}
 
-
 }
 
 export const mutationApi = new MutationApi(viewport)

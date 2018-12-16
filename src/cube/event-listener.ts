@@ -14,7 +14,7 @@ import {
 import {
 	mutationApi,
 	MutationApi
-}                 from './mutation-api'
+}                 from './mutation/mutation-api'
 import {viewport} from './viewport'
 
 export interface MoveViewportEvent {

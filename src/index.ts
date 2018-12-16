@@ -1,5 +1,5 @@
 import {ValuesOutCallback} from './cube/cube-movement'
-import {MutationApi}       from './cube/mutation-api'
+import {MutationApi}       from './cube/mutation/mutation-api'
 
 export async function setViewImport(
 	cb?: ValuesOutCallback
@@ -13,4 +13,4 @@ export function devLoad(): void {
 	console.log('vc-client-logic devLoad')
 }
 
-export {IMutationApi} from './cube/mutation-api'
+export {IMutationApi} from './cube/mutation/mutation-api'

@@ -184,7 +184,7 @@ export class MutationApi
 
 		let closestMatrixPosition = this.getClosestMatrixPosition()
 
-		
+
 	}
 
 	private getDimensionToPreserve(

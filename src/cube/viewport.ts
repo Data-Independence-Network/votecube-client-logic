@@ -24,6 +24,8 @@ export interface ViewPort {
 	el: Element | null
 	increment: MoveIncrement
 	pp: PositionPercentages
+	// Recently Moved Dimension
+	rmd: Dimension[]
 	x: number
 	xi: number
 	y: number
@@ -71,6 +73,10 @@ export interface VisibleDirection {
 	z: Direction
 }
 
+export type Dimension = 'x' | 'y' | 'z'
+
+export type ValueArrayPosition = 0 | 1 | 2 | 3 | 4 | 5
+
 export const viewport: ViewPort = {
 	cb: null,
 	cr: {
@@ -93,6 +99,8 @@ export const viewport: ViewPort = {
 			plus: 100
 		}
 	},
+	// Recently moved dimension
+	rmd: [],
 	x: 0,
 	xi: 0,
 	y: 0,
@@ -154,7 +162,7 @@ export const viewport: ViewPort = {
 		//     console.log('axis-aligned full square');
 		// }
 
-		this.cb(VALUE_MATRICES[this.idx][xiRemainder][yiRemainder])
+		this.cb(VALUE_MATRICES[this.zm][xiRemainder][yiRemainder])
 
 		console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
 

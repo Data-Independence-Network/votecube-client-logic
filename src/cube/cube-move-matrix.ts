@@ -1,3 +1,5 @@
+import {PositionPercent} from './cube-movement'
+
 export const VALUE_MATRICES = [[], [], []]
 
 export enum MoveIncrement {
@@ -32,6 +34,11 @@ export const MV_INC_IDX: { [key: string]: ZoomIndex } = {
 	[MoveIncrement.FIVE]: 2,
 }
 
+export type PositionValues = [
+	PositionPercent, PositionPercent, PositionPercent,
+	PositionPercent, PositionPercent, PositionPercent
+	]
+
 //  4   0   1
 const fiveDegreeValueTemplate = [
 	[[0, 0, 100], [0, 0, 100], [0, 0, 100], [6, 0, 94], [13, 0, 87], [20, 0, 80], [28, 0, 72], [35, 0, 65], [42, 0, 58], [50, 0, 50]],
@@ -40,7 +47,7 @@ const fiveDegreeValueTemplate = [
 	[[0, 6, 94], [0, 6, 94], [0, 6, 94], [5, 6, 89], [12, 6, 82], [19, 6, 75], [26, 6, 68], [33, 6, 61], [40, 6, 54], [47, 6, 47]],
 	[[0, 13, 87], [0, 13, 87], [0, 13, 87], [5, 13, 82], [11, 13, 76], [18, 13, 69], [26, 12, 62], [31, 12, 57], [37, 12, 51], [44, 12, 44]],
 	[[0, 20, 80], [0, 21, 79], [0, 21, 79], [4, 21, 75], [10, 20, 70], [16, 20, 64], [22, 19, 59], [28, 19, 53], [34, 19, 47], [40, 20, 40] /*41,19,41*/],
-	[[0, 28, 72], [0, 28, 72], [0, 28, 72], [3, 28, 69], [9, 27, 66], [ 14, 27, 59], [20, 26, 54], [26, 26, 48], [31, 26, 43], [37, 26, 37]],
+	[[0, 28, 72], [0, 28, 72], [0, 28, 72], [3, 28, 69], [9, 27, 66], [14, 27, 59], [20, 26, 54], [26, 26, 48], [31, 26, 43], [37, 26, 37]],
 	[[0, 35, 65], [0, 35, 65], [0, 36, 64], [2, 35, 63], [7, 35, 58], [13, 34, 53], [18, 33, 49], [23, 33, 44], [28, 33, 39], [34, 32, 34] /*34, 33, 34*/],
 	[[0, 42, 58], [0, 43, 57], [0, 43, 57], [1, 43, 56], [6, 42, 52], [11, 41, 48], [16, 41, 43], [20, 40, 40], [20, 40, 35], [30, 40, 30]],
 	[[0, 50, 50], [0, 50, 50], [0, 51, 49], [0, 51, 49], [4, 50, 46], [9, 49, 42], [13, 49, 38], [17, 48, 35], [22, 48, 30], [26, 48, 26]],
@@ -187,14 +194,14 @@ export function populateValueMatrix(
 		const loopEndX             = moveSubMatrix[0] == 1 ? endX : -endX
 		const isPositiveDirectionX = moveSubMatrix[0] == 1 ? 1 : 0
 		for (let x = 0;
-				 isPositiveDirectionX ? x < loopEndX : x > loopEndX;
-				 isPositiveDirectionX ? x++ : x--) {
+		     isPositiveDirectionX ? x < loopEndX : x > loopEndX;
+		     isPositiveDirectionX ? x++ : x--) {
 			const loopEndY             = moveSubMatrix[1] == 1 ? endY : -endY
 			const isPositiveDirectionY = moveSubMatrix[1] == 1 ? 1 : 0
 			const xValueTemplate       = matrixValueTemplate[Math.abs(x)]
 			for (let y = 0;
-					 isPositiveDirectionY ? y < loopEndY : y > loopEndY;
-					 isPositiveDirectionY ? y++ : y--) {
+			     isPositiveDirectionY ? y < loopEndY : y > loopEndY;
+			     isPositiveDirectionY ? y++ : y--) {
 				const yValueTemplate                    = xValueTemplate[Math.abs(y)]
 				const values                            = [0, 0, 0, 0, 0, 0]
 				values[subMatrixPositions[0]]           = yValueTemplate[0]
@@ -206,28 +213,34 @@ export function populateValueMatrix(
 		}
 	}
 
-	let line = 'const matrix = [\n'
-	for (let i = 0; i < valueMatrix.length; i++) {
-		line += '['
-		for (let j = 0; j < 9; j++) {
-		// for (let j = 0; j < valueMatrix[i].length; j++) {
-			let values = valueMatrix[i][j]
+	/*
+		let line = 'const matrix = [\n'
+		for (let i = 0; i < valueMatrix.length; i++) {
 			line += '['
-			for(let k = 0; k < 6; k++) {
-				let numVal = '' + values[k];
-				switch(numVal.length) {
-					case 1:
-						numVal = '  ' + numVal
-						break
-					case 2:
-						numVal = ' ' + numVal
-						break
+			for (let j = 0; j < 9; j++) {
+				// for (let j = 0; j < valueMatrix[i].length; j++) {
+				let values = valueMatrix[i][j]
+				if (!values) {
+					line += '[   ,   ,   ,   ,   ,   ],'
+					continue
 				}
-				line += numVal + ','
+				line += '['
+				for (let k = 0; k < 6; k++) {
+					let numVal = '' + values[k]
+					switch (numVal.length) {
+						case 1:
+							numVal = '  ' + numVal
+							break
+						case 2:
+							numVal = ' ' + numVal
+							break
+					}
+					line += numVal + ','
+				}
+				line += '],'
 			}
-			line += '],'
+			line += '],\n'
 		}
-		line += '],\n'
-	}
-	console.log(line + '\n]')
+		console.log(line + '\n]')
+		*/
 }

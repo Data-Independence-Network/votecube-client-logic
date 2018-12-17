@@ -173,8 +173,7 @@ export function populateValueMatrix(
 	const numDivisions = NUM_DIVISIONS[matrixIndex]
 	const valueMatrix  = VALUE_MATRICES[matrixIndex]
 
-	let numDivisionsToAdd = numDivisions - endX
-	for (let i = 0; i < numDivisionsToAdd; i++) {
+	for (let i = 0; i < numDivisions; i++) {
 		const xSubMatrix = []
 		valueMatrix.push(xSubMatrix)
 		// for (let j = 0; j < numDivisions; j++) {

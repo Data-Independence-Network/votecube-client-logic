@@ -9,8 +9,14 @@ export async function setViewImport(
 	return eventListener.setViewPort(cb)
 }
 
-export function devLoad(): void {
-	console.log('vc-client-logic devLoad')
-}
-
 export {IMutationApi} from './cube/mutation/mutation-api'
+export {ZoomIndex}    from './cube/cube-move-matrix'
+export {
+	DimensionPercentages,
+	PositionPercentages,
+	Direction,
+	PositionPercent
+}                     from './cube/cube-movement'
+export {
+	Dimension
+}                     from './cube/viewport'

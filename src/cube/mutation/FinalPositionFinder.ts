@@ -160,13 +160,13 @@ export class FinalPositionFinder {
 		closestMatrixPosition: MatrixPosition,
 		minDist: MinDistancePosition
 	): number {
-		const nextClosesCellValues = VALUE_MATRICES[2]
+		const nextClosestCellValues = VALUE_MATRICES[2]
 			[closestMatrixPosition.i + minDist.i][closestMatrixPosition.j + minDist.j]
-		const closestCellValues    = closestMatrixPosition.values
-		let maxDistance            = 0
+		const closestCellValues     = closestMatrixPosition.values
+		let maxDistance             = 0
 		for (let k = 0; k < 6; k++) {
 			const currentDistance =
-							Math.abs(nextClosesCellValues[k] - closestCellValues[k]) as DistanceFromMatrixPosition
+							Math.abs(nextClosestCellValues[k] - closestCellValues[k]) as DistanceFromMatrixPosition
 			if (maxDistance > currentDistance) {
 				maxDistance = currentDistance
 			}
@@ -218,20 +218,73 @@ export class FinalPositionFinder {
 		i: number,
 		j: number
 	} {
+
+		let horizontalDists = this.getDists(closestMatrixPosition, 0, minDist.j)
+ 		let largestHorizontalDistIndex = this.getLargestDistIdx(horizontalDists)
+
+		let verticalDists = this.getDists(closestMatrixPosition, minDist.i, 0)
+		let largestVerticalDistIndex = this.getLargestDistIdx(verticalDists)
+
+		// get next cell values
 		const nextClosesCellValues = VALUE_MATRICES[2]
 			[closestMatrixPosition.i + minDist.i][closestMatrixPosition.j + minDist.j]
-		const closestCellValues    = closestMatrixPosition.values
-		let maxDistance            = 0
+		const closestCellValues = closestMatrixPosition.values
+		let horizontalIncrement    =
+					this.getInc(nextClosesCellValues, closestCellValues, largestHorizontalDistIndex)
+		let verticalIncrement      =
+					this.getInc(nextClosesCellValues, closestCellValues, largestVerticalDistIndex)
+
+		return {
+			i: Math.round(minDist.dist / horizontalIncrement),
+			j: Math.round(minDist.dist / verticalIncrement)
+		}
+	}
+
+
+	private getDists(
+		closestMatrixPosition: MatrixPosition,
+		iOffset: number,
+		jOffset: number
+	): number[] {
+		// get vertical values
+		const nextVerticalCellValues = VALUE_MATRICES[2]
+			[closestMatrixPosition.i + iOffset][closestMatrixPosition.j + jOffset]
+		let distances                = []
 		for (let k = 0; k < 6; k++) {
 			const currentDistance =
-							Math.abs(nextClosesCellValues[k] - closestCellValues[k]) as DistanceFromMatrixPosition
-			if (maxDistance > currentDistance) {
-				maxDistance = currentDistance
+							Math.abs(nextVerticalCellValues[k]
+								- closestMatrixPosition.values[k]) as DistanceFromMatrixPosition
+			distances.push(currentDistance)
+		}
+
+		return distances
+	}
+
+	private getLargestDistIdx(
+		dists: number[]
+	): ValueArrayPosition {
+		let largestDist
+		let largestDistIndex
+		for (let k = 0; k < 6; k++) {
+			const dist = dists[k]
+			if (!largestDist || largestDist < dist) {
+				largestDist      = dist
+				largestDistIndex = k
 			}
 		}
-		let increment = maxDistance / 5
 
-		return Math.round(minDist.dist / increment)
+		return largestDistIndex
+	}
+
+	private getInc(
+		nextClosesCellValues: PositionValues,
+		closestCellValues: PositionValues,
+		largestDistIndex
+	) {
+		const maxDistance =
+						Math.abs(nextClosesCellValues[largestDistIndex]
+							- closestCellValues[largestDistIndex]) as DistanceFromMatrixPosition
+		return maxDistance / 5
 	}
 
 }

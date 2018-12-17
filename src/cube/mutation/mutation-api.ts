@@ -3,12 +3,12 @@ import {
 	ZoomIndex
 }                                  from '../cube-move-matrix'
 import {
+	DimensionPercentages,
 	Direction,
 	PositionPercent
-}                                  from '../cube-movement'
+} from '../cube-movement'
 import {
 	Dimension,
-	DimensionPercentages,
 	ViewPort,
 	viewport
 }                                  from '../viewport'
@@ -189,19 +189,6 @@ export class MutationApi
 		const finalPosition = this.finalPositionFinder.findFinalPosition(closestMatrixPosition, this.vp)
 
 		this.degreePositionChooser.setFinalDegrees(finalPosition, this.vp)
-	}
-
-	private matrixPositionsMatch(
-		vals1: PositionValues,
-		vals2: PositionValues
-	) {
-		for (let i = 0; i < 6; i++) {
-			if (vals1[i] !== vals2[i]) {
-				return false
-			}
-		}
-
-		return true
 	}
 
 }

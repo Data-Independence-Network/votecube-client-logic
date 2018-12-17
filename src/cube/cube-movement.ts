@@ -58,8 +58,19 @@ export interface MousePosition {
 	start: Position
 }
 
+export interface PositionPercentages {
+	x: DimensionPercentages
+	y: DimensionPercentages
+	z: DimensionPercentages
+}
+
+export interface DimensionPercentages {
+	minus: PositionPercent
+	plus: PositionPercent
+}
+
 export interface ValuesOutCallback {
-	(values: number[]): void
+	(values: PositionPercentages): void
 }
 
 

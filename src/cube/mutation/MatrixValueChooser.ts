@@ -1,17 +1,19 @@
 import {
 	PositionValues,
 	VALUE_MATRICES
-} from '../cube-move-matrix'
+}                            from '../cube-move-matrix'
 import {
 	DimensionPercentages,
-	PositionPercentages,
+	PositionPercentages
+} from '../cube-movement'
+import {
 	ValueArrayPosition,
 	ViewPort
-} from '../viewport'
+}                            from '../viewport'
 import {
 	DistanceFromMatrixPosition,
 	MatrixPosition
-} from './types'
+}                            from './types'
 
 
 export class MatrixValueChooser {

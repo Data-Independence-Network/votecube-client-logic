@@ -12,6 +12,7 @@ import {
 	Move,
 	moveCoordinates,
 	PositionPercent,
+	PositionPercentages,
 	Pxs,
 	Pys,
 	ValuesOutCallback
@@ -49,17 +50,6 @@ export interface ViewPort {
 
 	reset(): void
 
-}
-
-export interface PositionPercentages {
-	x: DimensionPercentages
-	y: DimensionPercentages
-	z: DimensionPercentages
-}
-
-export interface DimensionPercentages {
-	minus: PositionPercent
-	plus: PositionPercent
 }
 
 export interface CubeRotation {
@@ -162,16 +152,14 @@ export const viewport: ViewPort = {
 		//     console.log('axis-aligned full square');
 		// }
 
-		this.cb(VALUE_MATRICES[this.zm][xiRemainder][yiRemainder])
-
-		console.log('x: ' + xiRemainder + '\t\ty: ' + yiRemainder)
-
 		this.moveToDegree()
 	},
 	/**
 	 * Need to be able to move to a particular angle
 	 */
 	moveToDegree(): void {
+		console.log('x: ' + this.x + '\t\ty: ' + this.y)
+		this.cb(this.pp)
 		this.el.style['transform'] = 'rotateX(' + this.x + 'deg) rotateY(' + this.y + 'deg)'
 	},
 	reset(): void {

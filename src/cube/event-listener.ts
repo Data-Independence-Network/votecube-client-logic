@@ -37,6 +37,10 @@ export function setViewPort(
 	viewport.cb = cb
 	viewport.el = cb ? gQ('#cube') : null
 
+	if (cb) {
+		cb(viewport.pp)
+	}
+
 	return cb ? mutationApi : null
 }
 
@@ -165,12 +169,12 @@ function moveViewport(
 	let lastCoords  = mouseObject.last
 
 	let dx, dy,
-	    vx: DirectionVector,
-	    vy: DirectionVector,
-	    moveX: 0 | 1           = 0,
-	    xBy: MovementDirection = 0,
-	    moveY: 0 | 1           = 0,
-	    yBy: MovementDirection = 0
+			vx: DirectionVector,
+			vy: DirectionVector,
+			moveX: 0 | 1           = 0,
+			xBy: MovementDirection = 0,
+			moveY: 0 | 1           = 0,
+			yBy: MovementDirection = 0
 	// directionChanged = 0
 
 	let now: number = new Date().getTime()
